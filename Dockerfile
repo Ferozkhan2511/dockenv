@@ -5,7 +5,9 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the current directory contents into the container at /app
-COPY . /app
+
+# Copy all JAR files from the target directory
+COPY target/*.jar /app/
 
 # Set environment variables
 ENV AppName=${AppName}
