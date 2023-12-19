@@ -7,7 +7,7 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 
 # Copy all JAR files from the target directory
-COPY target/*.jar /app/
+COPY $(System.DefaultWorkingDirectory)/*.jar /app/
 
 # Set environment variables
 ENV AppName=${AppName}
