@@ -13,6 +13,12 @@ jobs:
   steps:
   - checkout: self
 
+ # Display contents of the repository
+  - script: |
+      echo "Contents of the repository:"
+      ls -R $(System.DefaultWorkingDirectory)
+    displayName: 'Display Repository Contents'
+
   # Fetch values from Azure Key Vault
   - task: AzureKeyVault@2
     inputs:
@@ -57,35 +63,35 @@ jobs:
       publishLocation: 'Container'
     displayName: 'Publish artifact'
 
-- job: BuildDockerImage
-  dependsOn: DisplayKeyVaultValues
-  steps:
-  - checkout: self
+# - job: BuildDockerImage
+#   dependsOn: DisplayKeyVaultValues
+#   steps:
+#   - checkout: self
 
-  # Download the artifact published in the previous job
-  - task: DownloadPipelineArtifact@2
-    inputs:
-      artifact: 'my-artifact'  # Specify the correct alias or name of your artifact
-      path: '$(System.DefaultWorkingDirectory)/my-artifact'
-
-
+#   # Download the artifact published in the previous job
+#   - task: DownloadPipelineArtifact@2
+#     inputs:
+#       artifact: 'my-artifact'  # Specify the correct alias or name of your artifact
+#       path: '$(System.DefaultWorkingDirectory)/my-artifact'
 
 
 
- # Build the Docker image
-  - task: Docker@2
-    inputs:
-      command: 'build'
-      dockerfile: '$(**/Dockerfile)'
-      tags: '$(envcheck):$(Build.BuildId)'
-      buildContext: '$(Pipeline.Workspace)'
-    displayName: 'Build Docker Image'
 
-  # Push the Docker image to a container registry (replace 'your-container-registry' with your actual registry)
-  # - task: Docker@2
-  #   inputs:
-  #     command: 'push'
-  #     containerRegistry: 'docker'
-  #     repository: '$(envcheck)'
-  #     tags: '$(Build.BuildId)'
-  #   displayName: 'Push Docker Image'
+
+#  # Build the Docker image
+#   - task: Docker@2
+#     inputs:
+#       command: 'build'
+#       dockerfile: '$(**/Dockerfile)'
+#       tags: '$(envcheck):$(Build.BuildId)'
+#       buildContext: '$(Pipeline.Workspace)'
+#     displayName: 'Build Docker Image'
+
+#   # Push the Docker image to a container registry (replace 'your-container-registry' with your actual registry)
+#   # - task: Docker@2
+#   #   inputs:
+#   #     command: 'push'
+#   #     containerRegistry: 'docker'
+#   #     repository: '$(envcheck)'
+#   #     tags: '$(Build.BuildId)'
+#   #   displayName: 'Push Docker Image'
