@@ -86,7 +86,7 @@ jobs:
     inputs:
       command: 'build'
       dockerfile: '$(System.DefaultWorkingDirectory)**/Dockerfile'
-      tags: '$(envcheck):$(Build.BuildId)'
+      tags: 'envcheck:v.0'
       buildContext: '$(Pipeline.Workspace)'
     displayName: 'Build Docker Image'
 
@@ -95,6 +95,6 @@ jobs:
     inputs:
       command: 'push'
       containerRegistry: 'docker'
-      repository: '$(envcheck)'
-      tags: '$(Build.BuildId)'
+      repository: 'Feroz2511'
+      tags: 'envcheck:v.0'
     displayName: 'Push Docker Image'
