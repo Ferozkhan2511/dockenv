@@ -5,41 +5,37 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - name: NewAppName
-    value: 'azureapp'
-  - name: NewPort
-    value: '9090'
   - name: PropertiesFilePath
     value: '$(System.DefaultWorkingDirectory)/src/main/resources/application.properties'
 
 jobs:
-- job: BuildAndReplaceProperties
+- job: DisplayKeyVaultValues
   steps:
   - checkout: self
 
-
+  # Fetch values from Azure Key Vault
+  - task: AzureKeyVault@2
+    inputs:
+      azureSubscription: 'Az'
+      KeyVaultName: 'variablecheck'
+      SecretsFilter: '*'
+      RunAsPreJob: false
 
   - script: |
       # Debug: Print current directory and contents of the directory
       echo "Current Directory: $(pwd)"
       echo "Contents of $(PropertiesFilePath):"
       cat $(PropertiesFilePath)
+     
 
       # Replace values in application.properties
-      sed -i 's/^spring.application.name=.*$/spring.application.name=$(NewAppName)/' $(PropertiesFilePath)
-      sed -i 's/^server.port=.*$/server.port=$(NewPort)/' $(PropertiesFilePath)
+      sed -i "s/^spring.application.name=.*$/spring.application.name=$(AppName)/" $(PropertiesFilePath)
+      sed -i "s/^server.port=.*$/server.port=$(PortNumber)/" $(PropertiesFilePath)
 
       # Debug: Print the modified contents of the file
       echo "Modified Contents of $(PropertiesFilePath):"
       cat $(PropertiesFilePath)
     displayName: 'Replace values in application.properties'
-
-
-  # - script: |
-  #     # Replace values in application.properties
-  #     sed -i 's/^spring.application.name=.*/spring.application.name=$(NewAppName)/' $(PropertiesFilePath)
-  #     sed -i 's/^server.port=.*/server.port=$(NewPort)/' $(PropertiesFilePath)
-  #   displayName: 'Replace values in application.properties'
 
   - task: Maven@4
     inputs:
@@ -53,10 +49,10 @@ jobs:
       mavenAuthenticateFeed: false
       effectivePomSkip: false
       sonarQubeRunAnalysis: false
+
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: '$(System.DefaultWorkingDirectory)/target'
       ArtifactName: 'my-artifact'
       publishLocation: 'Container'
     displayName: 'Publish artifact'
-
