@@ -82,7 +82,7 @@ jobs:
   - task: Docker@2
     inputs:
       command: 'build'
-      dockerfile: '$(/home/vsts/work/1/s/Dockerfile)'
+      dockerfile: '$(**/Dockerfile)'
       tags: '$(envcheck):$(Build.BuildId)'
       buildContext: '$(Pipeline.Workspace)'
     displayName: 'Build Docker Image'
