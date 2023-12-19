@@ -75,17 +75,20 @@ jobs:
       path: '$(System.DefaultWorkingDirectory)/my-artifact'
 
 
+  - script: |
+       echo "Contents of Artifact:"
+       ls -R $(System.DefaultWorkingDirectory)/my-artifact
 
 
 
- # Build the Docker image
-  - task: Docker@2
-    inputs:
-      command: 'build'
-      dockerfile: '$(System.DefaultWorkingDirectory)**/Dockerfile'
-      tags: '$(envcheck):$(Build.BuildId)'
-      buildContext: '$(Pipeline.Workspace)'
-    displayName: 'Build Docker Image'
+#  # Build the Docker image
+#   - task: Docker@2
+#     inputs:
+#       command: 'build'
+#       dockerfile: '$(System.DefaultWorkingDirectory)**/Dockerfile'
+#       tags: '$(envcheck):$(Build.BuildId)'
+#       buildContext: '$(Pipeline.Workspace)'
+#     displayName: 'Build Docker Image'
 
   # Push the Docker image to a container registry (replace 'your-container-registry' with your actual registry)
   # - task: Docker@2
