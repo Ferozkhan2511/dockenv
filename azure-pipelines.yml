@@ -81,20 +81,27 @@ jobs:
 
 
 
+  - task: Docker@2
+    inputs:
+        containerRegistry: 'docker'
+        repository: 'feroz2511/envcheck'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+ 
  # Build the Docker image
-  - task: Docker@2
-    inputs:
-      command: 'build'
-      dockerfile: '$(System.DefaultWorkingDirectory)**/Dockerfile'
-      tags: 'envcheck:v.0'
-      buildContext: '$(Pipeline.Workspace)'
-    displayName: 'Build Docker Image'
+  # - task: Docker@2
+  #   inputs:
+  #     command: 'build'
+  #     dockerfile: '$(System.DefaultWorkingDirectory)**/Dockerfile'
+  #     tags: 'envcheck:v.0'
+  #     buildContext: '$(Pipeline.Workspace)'
+  #   displayName: 'Build Docker Image'
 
-  # Push the Docker image to a container registry (replace 'your-container-registry' with your actual registry)
-  - task: Docker@2
-    inputs:
-      command: 'push'
-      containerRegistry: 'docker'
-      repository: 'Feroz2511'
-      tags: 'envcheck:v.0'
-    displayName: 'Push Docker Image'
+  # # Push the Docker image to a container registry (replace 'your-container-registry' with your actual registry)
+  # - task: Docker@2
+  #   inputs:
+  #     command: 'push'
+  #     containerRegistry: 'docker'
+  #     repository: 'Feroz2511'
+  #     tags: 'envcheck:v.0'
+  #   displayName: 'Push Docker Image'
