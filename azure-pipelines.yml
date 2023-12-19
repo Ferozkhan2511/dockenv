@@ -58,7 +58,7 @@ jobs:
     displayName: 'Publish artifact'
 
 - job: BuildDockerImage
-  dependsOn: BuildAndPublish
+  dependsOn: DisplayKeyVaultValues
   steps:
   - checkout: self
 
