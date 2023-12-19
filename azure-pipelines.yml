@@ -82,7 +82,7 @@ jobs:
   - task: Docker@2
     inputs:
       command: 'build'
-      dockerfile: '$(**/Dockerfile)'
+      dockerfile: '$(System.DefaultWorkingDirectory)**/Dockerfile'
       tags: '$(envcheck):$(Build.BuildId)'
       buildContext: '$(Pipeline.Workspace)'
     displayName: 'Build Docker Image'
