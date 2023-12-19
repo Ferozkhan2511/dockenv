@@ -12,7 +12,7 @@ COPY target/*.jar /app/
 # Set environment variables
 ENV AppName=${AppName}
 ENV PortNumber=${PortNumber}
-ENV dbc:mysql=${dbc:mysql}
+ENV mysql=${mysql}
 ENV username=${username}
 ENV password=${password}
 
