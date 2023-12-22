@@ -17,6 +17,7 @@ jobs:
       azureSubscription: 'Az'  # Replace with your Azure subscription name
       KeyVaultName: 'envchec'            # Replace with your Key Vault name
       SecretsFilter: '*'                          # Retrieve all secrets
+      RunAsPreJob: false
 
   - script: |
       echo "env:" > $(System.DefaultWorkingDirectory)/values.yaml
@@ -32,8 +33,6 @@ jobs:
       chartType: 'FilePath'
       chartPath: '$(System.DefaultWorkingDirectory)/my-chart'
       releaseName: 'env'
-      values: |
-        - name: key1
-          value: $(AppName)
-        - name: key2
-          value: $(PortNumber)
+      overrideValues: |
+        key1=$(AppName)
+        key2=$(PortNumber)
