@@ -26,6 +26,24 @@ jobs:
       cat $(System.DefaultWorkingDirectory)/values.yaml
     displayName: 'Print values.yaml'
 
+  - powershell: |
+      # Display values directly from Azure Key Vault
+      echo $(AppName) > check.txt
+      echo $(PortNumber) >> check.txt
+    displayName: 'Display Key Vault Values'
+
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: '$(System.DefaultWorkingDirectory)'
+      contents: 'check.txt'  # Copy all files
+      targetFolder: '$(Build.ArtifactStagingDirectory)/staging'
+
+  # Publish files as artifacts
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/staging'
+      ArtifactName: 'my-artifact'
+      publishLocation: 'Container'
 
   - task: HelmDeploy@0
     inputs:
