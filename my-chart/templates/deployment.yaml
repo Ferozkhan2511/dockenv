@@ -1,5 +1,4 @@
 # my-chart/templates/deployment.yaml
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,6 +26,6 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
         - name: KEY1
-          value: "${AppName}"
+          value: "{{ .Values.env.key1 }}"
         - name: KEY2
-          value: "${PortNumber}"
+          value: "{{ .Values.env.key2 }}"
