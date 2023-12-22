@@ -96,7 +96,7 @@ jobs:
     vmImage: 'ubuntu-latest'
   variables:
     - name: ChartPath
-      value: '$(System.DefaultWorkingDirectory)/charts'
+      value: '$(System.DefaultWorkingDirectory)/my-chart'
     - name: ReleaseName
       value: 'my-release'
 
