@@ -113,7 +113,7 @@ jobs:
   - task: AzureKeyVault@2
     inputs:
       azureSubscription: 'Az'
-      KeyVaultName: 'envcheck'
+      KeyVaultName: 'envchec'
       SecretsFilter: '*'
       RunAsPreJob: false
 
