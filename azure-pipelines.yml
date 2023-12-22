@@ -21,8 +21,8 @@ jobs:
 
   - script: |
       echo "env:" > $(System.DefaultWorkingDirectory)/values.yaml
-      echo "  key1: $(KeyVaultSecretNameForAppName)" >> $(System.DefaultWorkingDirectory)/values.yaml
-      echo "  key2: $(KeyVaultSecretNameForPortNumber)" >> $(System.DefaultWorkingDirectory)/values.yaml
+      echo "  key1: $(AppName)" >> $(System.DefaultWorkingDirectory)/values.yaml
+      echo "  key2: $(PortNumber)" >> $(System.DefaultWorkingDirectory)/values.yaml
     displayName: 'Create values.yaml file'
 
   - task: HelmDeploy@0
