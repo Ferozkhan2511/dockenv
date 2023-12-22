@@ -107,7 +107,7 @@ jobs:
   - task: DownloadPipelineArtifact@2
     inputs:
       artifact: 'helm-charts'
-      path: '$(System.DefaultWorkingDirectory)/charts'
+      path: '$(System.DefaultWorkingDirectory)/my-chart'
 
   # Fetch values from Azure Key Vault (if needed for Helm values)
   - task: AzureKeyVault@2
