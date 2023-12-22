@@ -5,4 +5,6 @@ image:
 
 replicaCount: 1
 
-env: {}
+env:
+  key1: "${AppName}"
+  key2: "PortNumber"
