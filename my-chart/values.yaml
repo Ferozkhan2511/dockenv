@@ -1,4 +1,5 @@
 # my-chart/values.yaml
+
 image:
   repository: nginx
   tag: latest
@@ -7,6 +8,14 @@ image:
 replicaCount: 1
 
 env:
-  key1: "${AppName}"
-  key2: "${PortNumber}"
+  key1: "AppName"
+  key2: "PortNumber"
 
+azureKeyVaultSecret:
+  enabled: true
+  name: my-azure-keyvault-secret
+  keys:
+    - name: "AppName"
+      key: "AppName"
+    - name: "PortNumber"
+      key: "PortNumber"
