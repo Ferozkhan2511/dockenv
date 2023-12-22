@@ -4,126 +4,25 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  - name: PropertiesFilePath
-    value: '$(System.DefaultWorkingDirectory)/src/main/resources/application.properties'
-
 jobs:
-- job: DisplayKeyVaultValues
-  steps:
-  - checkout: self
-
-#  # Display contents of the repository
-#   - script: |
-#       echo "Contents of the repository:"
-#       ls -R $(System.DefaultWorkingDirectory)
-#     displayName: 'Display Repository Contents'
-
-#   # Fetch values from Azure Key Vault
-#   - task: AzureKeyVault@2
-#     inputs:
-#       azureSubscription: 'Az'
-#       KeyVaultName: 'envchec'
-#       SecretsFilter: '*'
-#       RunAsPreJob: false
-
-#   - script: |
-#       # Debug: Print current directory and contents of the directory
-#       echo "Current Directory: $(pwd)"
-#       echo "Contents of $(PropertiesFilePath):"
-#       cat $(PropertiesFilePath)
-     
-
-#       # Replace values in application.properties
-#       sed -i "s/^spring.application.name=.*$/spring.application.name=$(AppName)/" $(PropertiesFilePath)
-#       sed -i "s/^server.port=.*$/server.port=$(PortNumber)/" $(PropertiesFilePath)
-
-#       # Debug: Print the modified contents of the file
-#       echo "Modified Contents of $(PropertiesFilePath):"
-#       cat $(PropertiesFilePath)
-#     displayName: 'Replace values in application.properties'
-
-#   - task: Maven@4
-#     inputs:
-#       mavenPomFile: 'pom.xml'
-#       options: '-DskipTests'
-#       publishJUnitResults: true
-#       testResultsFiles: '**/surefire-reports/TEST-*.xml'
-#       javaHomeOption: 'JDKVersion'
-#       jdkVersionOption: '1.17'
-#       mavenVersionOption: 'Default'
-#       mavenAuthenticateFeed: false
-#       effectivePomSkip: false
-#       sonarQubeRunAnalysis: false
-
-#   - task: PublishBuildArtifacts@1
-#     inputs:
-#       PathtoPublish: '$(System.DefaultWorkingDirectory)/target'
-#       ArtifactName: 'my-artifact'
-#       publishLocation: 'Container'
-#     displayName: 'Publish artifact'
-
-# - job: BuildDockerImage
-#   dependsOn: DisplayKeyVaultValues
-#   steps:
-#   - checkout: self
-
-#   # Download the artifact published in the previous job
-#   - task: DownloadPipelineArtifact@2
-#     inputs:
-#       artifact: 'my-artifact'  # Specify the correct alias or name of your artifact
-#       path: '$(System.DefaultWorkingDirectory)/my-artifact'
-
-
-#   # - script: |
-#   #      echo "Contents of Artifact:"
-#   #      ls -R $(System.DefaultWorkingDirectory)/my-artifact
-
-
-
-#   - task: Docker@2
-#     inputs:
-#         containerRegistry: 'docker'
-#         repository: 'feroz2511/envcheck'
-#         command: 'buildAndPush'
-#         Dockerfile: '**/Dockerfile'
- 
-
-
 - job: DeployWithHelm
-  dependsOn: DisplayKeyVaultValues
   pool:
     vmImage: 'ubuntu-latest'
-  variables:
-    - name: ChartPath
-      value: '$(System.DefaultWorkingDirectory)/my-chart'
-    - name: ReleaseName
-      value: 'my-release'
 
   steps:
   - checkout: self
 
-  # # Download Helm charts
-  # - task: DownloadPipelineArtifact@2
-  #   inputs:
-  #     artifact: 'my-artifact'
-  #     path: '$(System.DefaultWorkingDirectory)/my-chart'
-
-  # Fetch values from Azure Key Vault (if needed for Helm values)
   - task: AzureKeyVault@2
     inputs:
-      azureSubscription: 'Az'
-      KeyVaultName: 'envchec'
-      SecretsFilter: '*'
-      RunAsPreJob: false
+      azureSubscription: 'Az'  # Replace with your Azure subscription name
+      KeyVaultName: 'envchec'            # Replace with your Key Vault name
+      SecretsFilter: '*'                          # Retrieve all secrets
 
-  # Create values.yaml file with necessary values for Helm
   - script: |
       echo "env:" > $(System.DefaultWorkingDirectory)/values.yaml
-      echo "  key1: $(Key1Secret)" >> $(System.DefaultWorkingDirectory)/values.yaml
-      echo "  key2: $(Key2Secret)" >> $(System.DefaultWorkingDirectory)/values.yaml
+      echo "  key1: $(AppName)" >> $(System.DefaultWorkingDirectory)/values.yaml
+      echo "  key2: $(PortNumber)" >> $(System.DefaultWorkingDirectory)/values.yaml
     displayName: 'Create values.yaml file'
-
 
   - task: HelmDeploy@0
     inputs:
@@ -131,18 +30,10 @@ jobs:
       kubernetesServiceConnection: 'kubecluster'
       command: 'install'
       chartType: 'FilePath'
-      chartPath: 'my-chart'
+      chartPath: '$(System.DefaultWorkingDirectory)/my-chart'
       releaseName: 'env'
-
-
-  # # Connect to AKS cluster
-  # - script: |
-  #     az aks get-credentials --resource-group Feroz-RG --name Kube
-  #   displayName: 'Azure CLI - AKS Connection'
-
-  # # Deploy Helm chart to AKS
-  # - script: |
-  #     helm upgrade --install $(ReleaseName) $(ChartPath) \
-  #       --values $(System.DefaultWorkingDirectory)/values.yaml \
-  #       --namespace $(HELM_NAMESPACE)
-  #   displayName: 'Deploy with Helm to AKS'
+      values: |
+        - name: key1
+          value: $(AppName)
+        - name: key2
+          value: $(PortNumber)
