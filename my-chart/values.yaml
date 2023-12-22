@@ -1,6 +1,6 @@
 # my-chart/values.yaml
 image:
-  repository: feroz2511/envcheck
+  repository: nginx
   tag: latest
   pullPolicy: IfNotPresent
 
