@@ -27,12 +27,6 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
         - name: KEY1
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.azureKeyVaultSecret.name }}
-              key: AppName
+          value: "$(AppName)"
         - name: KEY2
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.azureKeyVaultSecret.name }}
-              key: PortNumber
+          value: "$(PortNumber)"
