@@ -27,6 +27,6 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
         - name: KEY1
-          value: "$(AppName)"
+          value: "${AppName}"
         - name: KEY2
-          value: "$(PortNumber)"
+          value: "${PortNumber}"
