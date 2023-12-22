@@ -23,7 +23,9 @@ jobs:
       echo "env:" > $(System.DefaultWorkingDirectory)/values.yaml
       echo "  key1: $(AppName)" >> $(System.DefaultWorkingDirectory)/values.yaml
       echo "  key2: $(PortNumber)" >> $(System.DefaultWorkingDirectory)/values.yaml
-    displayName: 'Create values.yaml file'
+      cat $(System.DefaultWorkingDirectory)/values.yaml
+    displayName: 'Print values.yaml'
+
 
   - task: HelmDeploy@0
     inputs:
