@@ -103,11 +103,11 @@ jobs:
   steps:
   - checkout: self
 
-  # Download Helm charts
-  - task: DownloadPipelineArtifact@2
-    inputs:
-      artifact: 'my-artifact'
-      path: '$(System.DefaultWorkingDirectory)/my-chart'
+  # # Download Helm charts
+  # - task: DownloadPipelineArtifact@2
+  #   inputs:
+  #     artifact: 'my-artifact'
+  #     path: '$(System.DefaultWorkingDirectory)/my-chart'
 
   # Fetch values from Azure Key Vault (if needed for Helm values)
   - task: AzureKeyVault@2
