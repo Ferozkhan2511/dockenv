@@ -7,6 +7,7 @@ image:
 
 replicaCount: 1
 
+
 env:
-  key1: "APPNAME"
-  key2: "PORTNUMBER"
+  key1: "AppName"
+  key2: "PortNumber"
