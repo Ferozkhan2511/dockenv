@@ -91,7 +91,7 @@ jobs:
 
 
 - job: DeployWithHelm
-  dependsOn: BuildDockerImage
+  dependsOn: DisplayKeyVaultValues
   pool:
     vmImage: 'ubuntu-latest'
   variables:
