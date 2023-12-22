@@ -1,16 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Properties Viewer</title>
+    <title>Properties</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyFNBp4M+6a5miqzR8ZO+XnFhBGC2fW3s"
+          crossorigin="anonymous">
+    <style>
+        /* Custom CSS for alternating row colors */
+        .odd-row {
+            background-color: #f8f9fa; /* Light gray */
+        }
+        .even-row {
+            background-color: #e9ecef; /* Light blue-gray */
+        }
+    </style>
 </head>
 <body>
-    <h2>Properties from application.properties file:</h2>
-    <ul>
-        <li th:each="entry : ${properties}">
-            <span th:text="${entry.key}"></span> = <span th:text="${entry.value}"></span>
-        </li>
-    </ul>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Application Properties</h2>
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Key</th>
+                    <th scope="col"></th>
+                    <th scope="col">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Use Thymeleaf to iterate over properties and set row classes -->
+                <tr th:each="entry, rowStat : ${properties}"
+                    th:class="${rowStat.odd} ? 'odd-row' : 'even-row'">
+                    <td th:text="${rowStat.count}"></td>
+                    <td th:text="${entry.key}"></td>
+                    <td>:</td>
+                    <td th:text="${entry.value}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add Bootstrap JS and Popper.js scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyFNBp4M+6a5miqzR8ZO+XnFhBGC2fW3s"
+            crossorigin="anonymous"></script>
+
 </body>
 </html>

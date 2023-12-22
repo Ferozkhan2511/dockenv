@@ -1,0 +1,12 @@
+# my-chart/values.yaml
+image:
+  repository: feroz2511/envcheck
+  tag: latest
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+env:
+  key1: "AppName"
+  key2: "PortNumber"
+

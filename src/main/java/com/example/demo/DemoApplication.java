@@ -25,6 +25,15 @@ public class DemoApplication implements CommandLineRunner {
     @Value("${server.port}")
     private String serverPort;
 
+    @Value("${mysqlurl}")
+    private String mysqlUrl;
+
+    @Value("${username}")
+    private String username;
+
+    @Value("${password}")
+    private String password;
+
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }
@@ -34,6 +43,9 @@ public class DemoApplication implements CommandLineRunner {
         // Display the content in the console
         System.out.println("Application Name: " + appName);
         System.out.println("Server Port: " + serverPort);
+        System.out.println("MySQL URL: " + mysqlUrl);
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
     }
 
     @GetMapping("/")
