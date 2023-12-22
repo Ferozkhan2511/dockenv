@@ -124,14 +124,25 @@ jobs:
       echo "  key2: $(Key2Secret)" >> $(System.DefaultWorkingDirectory)/values.yaml
     displayName: 'Create values.yaml file'
 
-  # Connect to AKS cluster
-  - script: |
-      az aks get-credentials --resource-group Feroz-RG --name Kube
-    displayName: 'Azure CLI - AKS Connection'
 
-  # Deploy Helm chart to AKS
-  - script: |
-      helm upgrade --install $(ReleaseName) $(ChartPath) \
-        --values $(System.DefaultWorkingDirectory)/values.yaml \
-        --namespace $(HELM_NAMESPACE)
-    displayName: 'Deploy with Helm to AKS'
+  - task: HelmDeploy@0
+    inputs:
+      connectionType: 'Kubernetes Service Connection'
+      kubernetesServiceConnection: 'kubecluster'
+      command: 'install'
+      chartType: 'FilePath'
+      chartPath: 'my-chart'
+      releaseName: 'env'
+
+
+  # # Connect to AKS cluster
+  # - script: |
+  #     az aks get-credentials --resource-group Feroz-RG --name Kube
+  #   displayName: 'Azure CLI - AKS Connection'
+
+  # # Deploy Helm chart to AKS
+  # - script: |
+  #     helm upgrade --install $(ReleaseName) $(ChartPath) \
+  #       --values $(System.DefaultWorkingDirectory)/values.yaml \
+  #       --namespace $(HELM_NAMESPACE)
+  #   displayName: 'Deploy with Helm to AKS'
