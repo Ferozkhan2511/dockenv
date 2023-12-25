@@ -37,9 +37,9 @@ jobs:
 
   - task: HelmDeploy@0
     inputs:
-      azureSubscriptionForACR: '3a8533e4-924b-4304-9ac3-b7d16f9ceb7b'
-      azureResourceGroupForACR: 'Feroz-RG'
-      azureContainerRegistry: 'acuraz'
+      # azureSubscriptionForACR: '3a8533e4-924b-4304-9ac3-b7d16f9ceb7b'
+      # azureResourceGroupForACR: 'Feroz-RG'
+      # azureContainerRegistry: 'acuraz'
       connectionType: 'Kubernetes Service Connection'
       kubernetesServiceConnection: 'kubecluster'
       command: 'install'
