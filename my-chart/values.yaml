@@ -1,10 +1,12 @@
+# values.yaml
+
+replicaCount: 1
+
 image:
   repository: nginx
   tag: latest
   pullPolicy: IfNotPresent
 
-replicaCount: 1
-
 env:
-  key1: "$(AppName)"
-  PortNumber: "${PortNumber}"
+  key1: ""
+  key2: ""
