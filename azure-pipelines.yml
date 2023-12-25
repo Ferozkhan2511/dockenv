@@ -12,6 +12,14 @@ jobs:
   steps:
   - checkout: self
 
+  - task: AzurePowerShell@5
+    inputs:
+      azureSubscription: 'Az'  # Specify your Azure subscription
+      ScriptType: 'InlineScript'
+      Inline: |
+        Install-Module -Name Az -Force -AllowClobber -Scope CurrentUser
+        Import-Module Az
+
   - task: AzureKeyVault@2
     inputs:
       azureSubscription: 'Az'
