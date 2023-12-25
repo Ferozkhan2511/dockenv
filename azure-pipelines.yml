@@ -21,31 +21,33 @@ jobs:
 
   - script: |
       echo "env:" > $(System.DefaultWorkingDirectory)/values.yaml
-      echo "  key1: $(AppName)" >> $(System.DefaultWorkingDirectory)/values.yaml
-      echo "  key2: $(PortNumber)" >> $(System.DefaultWorkingDirectory)/values.yaml
+      echo "  key1: ${AppName}" >> $(System.DefaultWorkingDirectory)/values.yaml
+      echo "  key2: ${PortNumber}" >> $(System.DefaultWorkingDirectory)/values.yaml
     displayName: 'Create values.yaml file'
 
-  # - task: HelmDeploy@0
-  #   inputs:
-  #     connectionType: 'Kubernetes Service Connection'
-  #     kubernetesServiceConnection: 'kubecluster'
-  #     command: 'install'
-  #     chartType: 'FilePath'
-  #     chartPath: '$(System.DefaultWorkingDirectory)/my-chart'
-  #     releaseName: 'env'
+  - powershell: |
+      # Display values directly from Azure Key Vault
+      echo "$(AppName)" > $(System.DefaultWorkingDirectory)/check.txt
+      echo "$(PortNumber)" >> $(System.DefaultWorkingDirectory)/check.txt
+    displayName: 'Display Key Vault Values'
 
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: '$(System.DefaultWorkingDirectory)'
+      contents: 'check.txt'
+      targetFolder: '$(Build.ArtifactStagingDirectory)/staging'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/staging'
+      ArtifactName: 'my-artifact'
+      publishLocation: 'Container'
 
   - task: HelmDeploy@0
     inputs:
-      # azureSubscriptionForACR: '3a8533e4-924b-4304-9ac3-b7d16f9ceb7b'
-      # azureResourceGroupForACR: 'Feroz-RG'
-      # azureContainerRegistry: 'acuraz'
       connectionType: 'Kubernetes Service Connection'
       kubernetesServiceConnection: 'kubecluster'
       command: 'install'
       chartType: 'FilePath'
       chartPath: '$(System.DefaultWorkingDirectory)/my-chart'
       releaseName: 'env'
-      overrideValues: |
-        key1=$(AppName)
-        key2=$(PortNumber)
