@@ -12,14 +12,6 @@ jobs:
   steps:
   - checkout: self
 
-  # - task: AzurePowerShell@5
-  #   inputs:
-  #     azureSubscription: 'Az'  # Specify your Azure subscription
-  #     ScriptType: 'InlineScript'
-  #     Inline: |
-  #       Install-Module -Name Az -Force -AllowClobber -Scope CurrentUser
-  #       Import-Module Az
-
   - task: AzureKeyVault@2
     inputs:
       azureSubscription: 'Az'
@@ -27,10 +19,11 @@ jobs:
       SecretsFilter: '*'                          
       RunAsPreJob: false
 
-  - powershell: |
-      # $secrets = Get-AzKeyVaultSecret -VaultName "envchec" -AsPlainText
-      Set-Content -Path $(System.DefaultWorkingDirectory)/my-chart/values.yaml -Value "secrets:`r`n  keyVaultSecret1: '$($secrets.Secret1)'`r`n  keyVaultSecret2: '$($secrets.Secret2)'"
-    displayName: 'Update Helm Chart Values'
+  - script: |
+      echo "secrets:" > $(System.DefaultWorkingDirectory)/my-chart/values.yaml
+      echo "  keyVaultSecret1: $(AppName)" >> $(System.DefaultWorkingDirectory)/my-chart/values.yaml
+      echo "  keyVaultSecret2: $(PortNumber)" >> $(System.DefaultWorkingDirectory)/my-chart/values.yaml
+    displayName: 'Create values.yaml file'
 
   - task: HelmDeploy@0
     inputs:
