@@ -25,7 +25,7 @@ jobs:
       echo "  key2: $(PortNumber)" >> $(System.DefaultWorkingDirectory)/values.yaml
     displayName: 'Create values.yaml file'
 
-  - task: HelmDeploy@2
+  - task: HelmDeploy@1
     inputs:
       connectionType: 'Kubernetes Service Connection'
       kubernetesServiceConnection: 'kubecluster'
