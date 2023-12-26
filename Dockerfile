@@ -11,12 +11,12 @@ COPY /my-artifact/demo-0.0.1-SNAPSHOT.jar /app/
 #COPY . /app
 
 # Set environment variables
-ENV AppName=${AppName}
-ENV PortNumber=${PortNumber}
-ENV mysql=${mysql}
-ENV username=${username}
-ENV password=${password}
+#ENV AppName=${AppName}
+#ENV PortNumber=${PortNumber}
+#ENV mysql=${mysql}
+#ENV username=${username}
+#ENV password=${password}
 
 # Specify the command to run on container start
 
-CMD ["java", "-jar", "demo-0.0.1-SNAPSHOT.jar"]
+#CMD ["java", "-jar", "demo-0.0.1-SNAPSHOT.jar"]
