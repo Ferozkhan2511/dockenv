@@ -23,5 +23,5 @@ spec:
           value: "{{ .Values.secrets.mysql }}"
         - name: username
           value: "{{ .Values.secrets.username }}"
-        - name: KEY_VAULT_SECRET_3
+        - name: password
           value: "{{ .Values.secrets.password }}"
