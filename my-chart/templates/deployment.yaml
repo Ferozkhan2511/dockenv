@@ -16,9 +16,11 @@ spec:
     spec:
       containers:
       - name: my-app-container
-        image: nginx:latest
+        image: feroz2511/envfinal:1.0
         env:
         - name: KEY_VAULT_SECRET_1
           value: "{{ .Values.secrets.keyVaultSecret1 }}"
         - name: KEY_VAULT_SECRET_2
           value: "{{ .Values.secrets.keyVaultSecret2 }}"
+        - name: KEY_VAULT_SECRET_3
+          value: "{{ .Values.secrets.keyVaultSecret3 }}"
