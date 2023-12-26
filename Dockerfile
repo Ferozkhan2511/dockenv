@@ -7,7 +7,7 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 
 # Copy all JAR files from the target directory
-COPY $(System.DefaultWorkingDirectory)/demo-0.0.1-SNAPSHOT.jar /app/
+COPY $(System.DefaultWorkingDirectory)/my-artifact/demo-0.0.1-SNAPSHOT.jar /app/
 #COPY . /app
 
 # Set environment variables
