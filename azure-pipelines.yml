@@ -5,15 +5,15 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - name: PropertiesFilePath
-    value: '$(System.DefaultWorkingDirectory)/src/main/resources/application.properties'
+- name: PropertiesFilePath
+  value: '$(System.DefaultWorkingDirectory)/src/main/resources/application.properties'
 
 jobs:
 - job: DisplayKeyVaultValues
   steps:
   - checkout: self
 
- # Display contents of the repository
+  # Display contents of the repository
   - script: |
       echo "Contents of the repository:"
       ls -R $(System.DefaultWorkingDirectory)
@@ -32,7 +32,6 @@ jobs:
       echo "Current Directory: $(pwd)"
       echo "Contents of $(PropertiesFilePath):"
       cat $(PropertiesFilePath)
-     
 
       # Replace values in application.properties
       sed -i "s/^spring.application.name=.*$/spring.application.name=$(AppName)/" $(PropertiesFilePath)
@@ -74,43 +73,29 @@ jobs:
       artifact: 'my-artifact'  # Specify the correct alias or name of your artifact
       path: '$(System.DefaultWorkingDirectory)/my-artifact'
 
-
-  # - script: |
-  #      echo "Contents of Artifact:"
-  #      ls -R $(System.DefaultWorkingDirectory)/my-artifact
-
-
-
-  # - task: Docker@2
-  #   inputs:
-  #       containerRegistry: 'docker'
-  #       repository: 'feroz2511/envcheck'
-  #       command: 'buildAndPush'
-  #       Dockerfile: '**/Dockerfile'
-
-- task: Docker@2
-  inputs:
-    containerRegistry: 'docker'
-    repository: 'feroz2511/envfinal'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
-    tags: '1.0'
-
+  - task: Docker@2
+    inputs:
+      containerRegistry: 'docker'
+      repository: 'feroz2511/envfinal'
+      command: 'buildAndPush'
+      Dockerfile: '**/Dockerfile'
+      tags: '1.0'
 
 - job: BuildDockerImage
   dependsOn: DisplayKeyVaultValues
+  steps:
   - task: AzureKeyVault@2
     inputs:
       azureSubscription: 'Az'
       KeyVaultName: 'envchec'
-      SecretsFilter: '*'                          
+      SecretsFilter: '*'
       RunAsPreJob: false
 
   - script: |
       echo "secrets:" > $(System.DefaultWorkingDirectory)/my-chart/values.yaml
-      echo "  keyVaultSecret1: $(mysql)" >> $(System.DefaultWorkingDirectory)/my-chart/values.yaml
-      echo "  keyVaultSecret2: $(username)" >> $(System.DefaultWorkingDirectory)/my-chart/values.yaml
-      echo "  keyVaultSecret2: $(password)" >> $(System.DefaultWorkingDirectory)/my-chart/values.yaml
+      echo "  mysql: $(mysql)" >> $(System.DefaultWorkingDirectory)/my-chart/values.yaml
+      echo "  username: $(username)" >> $(System.DefaultWorkingDirectory)/my-chart/values.yaml
+      echo "  password: $(password)" >> $(System.DefaultWorkingDirectory)/my-chart/values.yaml
     displayName: 'Create values.yaml file'
 
   - task: HelmDeploy@0
