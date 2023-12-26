@@ -17,10 +17,11 @@ spec:
       containers:
       - name: my-app-container
         image: feroz2511/envfinal:1.0
+        command: ["/bin/sleep", "3600"]
         env:
-        - name: KEY_VAULT_SECRET_1
-          value: "{{ .Values.secrets.keyVaultSecret1 }}"
-        - name: KEY_VAULT_SECRET_2
-          value: "{{ .Values.secrets.keyVaultSecret2 }}"
+        - name: mysql
+          value: "{{ .Values.secrets.mysql }}"
+        - name: username
+          value: "{{ .Values.secrets.username }}"
         - name: KEY_VAULT_SECRET_3
-          value: "{{ .Values.secrets.keyVaultSecret3 }}"
+          value: "{{ .Values.secrets.password }}"
