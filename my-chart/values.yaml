@@ -1,5 +1,6 @@
 # values.yaml
 
 secrets:
-  keyVaultSecret1: ""
-  keyVaultSecret2: ""
+  mysql: ""
+  username: ""
+  password: ""
