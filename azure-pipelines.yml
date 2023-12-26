@@ -81,7 +81,7 @@ jobs:
       Dockerfile: '**/Dockerfile'
       tags: '1.0'
 
-- job: BuildDockerImage
+- job: DeployWithHelm
   dependsOn: DisplayKeyVaultValues
   steps:
   - task: AzureKeyVault@2
