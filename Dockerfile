@@ -18,4 +18,5 @@ ENV username=${username}
 ENV password=${password}
 
 # Specify the command to run on container start
+cd my-artifact
 CMD ["java", "-jar", "demo-0.0.1-SNAPSHOT.jar"]
